@@ -1,10 +1,8 @@
-import axios from 'axios';
+import axiosInstance from './axios';
 
-const GEMINI_API_URL = 'https://chatgpt-server-1qs2.onrender.com/api/generate';
 export const generateContent = async (prompt) => {
   try {
-    const response = await axios.post(
-      `${GEMINI_API_URL}`,
+    const response = await axiosInstance.post('/api/generate',
       {
         contents: [
           {

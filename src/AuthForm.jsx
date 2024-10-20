@@ -3,6 +3,7 @@ import { Box, Button, Flex, Heading, Input, Stack, Text, useToast } from '@chakr
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { login } from './store/auth/action';
+import axiosInstance from './axios';
 
 const AuthForm = () => {
     const initialForm = { email: '', password: '' }
@@ -16,14 +17,31 @@ const AuthForm = () => {
     const handleLogin = async (form) => {
         try {
             const { email, password } = form
-            const response = await axios.post('http://localhost:5000/login', { email, password });
-            const { userEmail, accessToken, refreshToken } = response.data;
+            const response = await axiosInstance.post(
+                `/login`
+                , { email, password });
+            const { userEmail, accessToken, refreshToken,message } = response.data;
             // Dispatch the login action with userEmail data and tokens
-            dispatch(login(userEmail, accessToken, refreshToken));
-            toastmessage(true, 'Logged in')
+                dispatch(login(userEmail, accessToken, refreshToken));
+                toastmessage(true, `${message}`)
+           
+            
         } catch (error) {
             console.error('Login failed:', error);
-            toastmessage(false, 'Logged in')
+            if (error.response) {
+                // The request was made, and the server responded with a status code outside of the 2xx range
+                const statusCode = error.response.status;
+                const {message} = error.response.data;
+                toastmessage(false, `${message}`)
+
+            } else if (error.request) {
+                // The request was made, but no response was received
+                console.error('No response received from the server', error.request);
+            } else {
+                // Something else happened while setting up the request
+                console.error('Error in setting up the request:', error.message);
+            }
+           
 
             // Handle login error (e.g., show a message to the user)
         }
@@ -32,16 +50,31 @@ const AuthForm = () => {
     const handleSignup = async (form) => {
         try {
             const { email, password } = form
-            const response = await axios.post('http://localhost:5000/signup', { email, password });
-            const { userEmail, accessToken, refreshToken } = response.data;
+            const response = await axiosInstance.post('/signup', { email, password });
+console.log('response',response);
+
+            const { userEmail, accessToken, refreshToken,message } = response.data;
 
             // Dispatch the login action with userEmail data and tokens
-            dispatch(login(userEmail, accessToken, refreshToken));
-            toastmessage(true, 'Signed in')
+                dispatch(login(userEmail, accessToken, refreshToken));
+                toastmessage(true, `${message}`)
+           
+            
         } catch (error) {
             console.error('Login failed:', error);
-            toastmessage(false, 'Signed in')
-
+            if (error.response) {
+                // The request was made, and the server responded with a status code outside of the 2xx range
+                const statusCode = error.response.status;
+                const {message} = error.response.data;
+                toastmessage(false, `${message}`)
+                console.error(`Error Status Code: ${statusCode}`);
+            } else if (error.request) {
+                // The request was made, but no response was received
+                console.error('No response received from the server', error.request);
+            } else {
+                // Something else happened while setting up the request
+                console.error('Error in setting up the request:', error.message);
+            }
             // Handle login error (e.g., show a message to the user)
         }
     };
@@ -56,7 +89,7 @@ const AuthForm = () => {
     };
     const toastmessage = (status, type) => {
         toast({
-            title: status ? `${type} successfully!` : 'Something went wrong',
+            title: type,
             status: status ? 'success' : 'error',
             duration: 2000,
             isClosable: true,

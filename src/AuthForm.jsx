@@ -8,6 +8,7 @@ import axiosInstance from './axios';
 const AuthForm = () => {
     const initialForm = { email: '', password: '' }
     const [isLogin, setIsLogin] = useState(true);
+   
     const [form, setForm] = useState(structuredClone(initialForm));
     const toast = useToast();
     const dispatch = useDispatch();
@@ -20,18 +21,18 @@ const AuthForm = () => {
             const response = await axiosInstance.post(
                 `/login`
                 , { email, password });
-            const { userEmail, accessToken, refreshToken,message } = response.data;
+            const { userEmail, accessToken, refreshToken, message } = response.data;
             // Dispatch the login action with userEmail data and tokens
-                dispatch(login(userEmail, accessToken, refreshToken));
-                toastmessage(true, `${message}`)
-           
-            
+            dispatch(login(userEmail, accessToken, refreshToken));
+            toastmessage(true, `${message}`)
+
+
         } catch (error) {
             console.error('Login failed:', error);
             if (error.response) {
                 // The request was made, and the server responded with a status code outside of the 2xx range
                 const statusCode = error.response.status;
-                const {message} = error.response.data;
+                const { message } = error.response.data;
                 toastmessage(false, `${message}`)
 
             } else if (error.request) {
@@ -41,7 +42,7 @@ const AuthForm = () => {
                 // Something else happened while setting up the request
                 console.error('Error in setting up the request:', error.message);
             }
-           
+
 
             // Handle login error (e.g., show a message to the user)
         }
@@ -51,21 +52,21 @@ const AuthForm = () => {
         try {
             const { email, password } = form
             const response = await axiosInstance.post('/signup', { email, password });
-console.log('response',response);
+            console.log('response', response);
 
-            const { userEmail, accessToken, refreshToken,message } = response.data;
+            const { userEmail, accessToken, refreshToken, message } = response.data;
 
             // Dispatch the login action with userEmail data and tokens
-                dispatch(login(userEmail, accessToken, refreshToken));
-                toastmessage(true, `${message}`)
-           
-            
+            dispatch(login(userEmail, accessToken, refreshToken));
+            toastmessage(true, `${message}`)
+
+
         } catch (error) {
             console.error('Login failed:', error);
             if (error.response) {
                 // The request was made, and the server responded with a status code outside of the 2xx range
                 const statusCode = error.response.status;
-                const {message} = error.response.data;
+                const { message } = error.response.data;
                 toastmessage(false, `${message}`)
                 console.error(`Error Status Code: ${statusCode}`);
             } else if (error.request) {

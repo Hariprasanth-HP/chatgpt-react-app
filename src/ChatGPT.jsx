@@ -27,17 +27,18 @@ const ContentGenerator = () => {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(false);
     const { user='C' } = useSelector(state => state.user)
+    const accessToken =  localStorage.getItem('accessToken');
 
     const userInitial = user[0]; // Replace with the actual user's first letter (e.g., from their name or username)
 
     const handleGenerate = async () => {
-        if (!inputText.trim()) return;
+        if (!inputText.trim()&&accessToken!=='') return;
 
         const userMessage = { text: inputText, sender: 'user' };
         setMessages([...messages, userMessage]);
 
         setLoading(true);
-        const content = await generateContent(inputText);
+        const content = await generateContent(inputText,accessToken);
         if (content) {
             const botMessage = { text: content.content.parts[0].text || '', sender: 'bot' };
             setMessages((prevMessages) => [...prevMessages, botMessage]);

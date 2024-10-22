@@ -18,7 +18,6 @@ import {
     IconButton,
 } from '@chakra-ui/react';
 import { generateContent } from './geminiService';
-import { ChevronDownIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './store/auth/action';
 

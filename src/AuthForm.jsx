@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Button, Flex, Heading, Input, Stack, Text, useToast } from '@chakra-ui/react';
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { login } from './store/auth/action';
 import axiosInstance from './axios';
@@ -31,7 +30,6 @@ const AuthForm = () => {
             console.error('Login failed:', error);
             if (error.response) {
                 // The request was made, and the server responded with a status code outside of the 2xx range
-                const statusCode = error.response.status;
                 const { message } = error.response.data;
                 toastmessage(false, `${message}`)
 

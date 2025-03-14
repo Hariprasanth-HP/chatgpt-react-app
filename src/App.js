@@ -9,11 +9,7 @@ const App = () => {
  useAuth()
   return (
     <>
-      {
-        isLoggedIn ?
-          <ContentGenerator />
-          : <AuthForm />
-      }
+       <ContentGenerator />
     </>
   );
 };

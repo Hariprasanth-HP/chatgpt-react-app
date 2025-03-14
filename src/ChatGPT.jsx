@@ -28,7 +28,7 @@ const ContentGenerator = () => {
     const { user='C' } = useSelector(state => state.user)
     const accessToken =  localStorage.getItem('accessToken');
 
-    const userInitial = user[0]; // Replace with the actual user's first letter (e.g., from their name or username)
+    const userInitial = 'C'; // Replace with the actual user's first letter (e.g., from their name or username)
 
     const handleGenerate = async () => {
         if (!inputText.trim()&&accessToken!=='') return;
